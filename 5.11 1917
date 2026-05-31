@@ -1,0 +1,36 @@
+class Solution {
+public:
+    bool validPath(int n, vector<vector<int>>& edges, int source, int destination) {
+        vector<vector<int>> list(n);
+        for(auto edge:edges){
+            int a = edge[0];
+            int b = edge[1];
+
+            list[a].push_back(b);
+            list[b].push_back(a);
+        }
+
+        vector<bool> visited(n, false);
+        queue<int> q;
+
+        q.push(source);
+        visited[source] = true;
+
+        while(!q.empty()){
+            int current = q.front();
+            q.pop();
+
+            if(current == destination){
+                return true;
+            }
+
+            for(auto next:list[current]){
+                if(!visited[next]){
+                    visited[next]=true;
+                    q.push(next);
+                }
+            }
+        }
+        return false;
+    }
+};
