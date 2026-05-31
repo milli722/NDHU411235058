@@ -1,0 +1,38 @@
+class Solution {
+public:
+    bool possibleBipartition(int n, vector<vector<int>>& dislikes) {
+        vector<vector<int>> list(n+1);
+        for(auto d:dislikes){
+            int a = d[0];
+            int b = d[1];
+
+            list[a].push_back(b);
+            list[b].push_back(a);
+        }
+
+        vector<int> group(n+1, 0);
+        for(int i=1; i<=n; i++){
+            if(group[i]!=0){
+                continue;
+            }
+            queue<int> q;
+            group[i] = 1;
+            q.push(i);
+            while(!q.empty()){
+                int current = q.front();
+                q.pop();
+
+                for(auto next:list[current]){
+                    if(group[next] == 0){
+                        group[next] = -group[current];
+                        q.push(next);
+                    }
+                    else if(group[next] == group[current]){
+                        return false;
+                    }
+                }
+            }   
+        }
+     return true;
+    }
+};
